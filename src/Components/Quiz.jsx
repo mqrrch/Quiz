@@ -2,27 +2,41 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { animated, useSpring } from "@react-spring/web";
 import useAxiosGet from "../Hooks/HttpRequest";
+import { Choices } from "./Choices";
+import { NextButton } from "./NextButton";
 
 export default function Quiz(){
     const url = 'https://the-trivia-api.com/v2/questions'
     const dataset = useAxiosGet(url)
     const [currentIndex, setCurrentIndex] = useState(0)
     const [timer, setTimer] = useState(10)
+    const [showAnswer, setShowAnswer] = useState(false)
+    const [selectedAnswer, setSelectedAnswer] = useState(null)
     
     let question;
-    let choices;
     let data;
     
     if (dataset.data){
         data = dataset.data
         question = data[currentIndex]['question']['text']
-        choices = [...data[currentIndex]['incorrectAnswers'], data[currentIndex]['correctAnswer']]
     }
 
     useEffect(() => {
-        
-    })
-    
+        if (showAnswer) return;
+
+        const timerId = setInterval(() => {
+            setTimer((prevTime) => {
+                if (prevTime === 1){
+                    clearInterval(timerId)
+                    setShowAnswer(true)
+                }
+                return prevTime - 1
+            })
+        }, 1000)
+
+        return () => clearInterval(timerId)
+    }, [showAnswer])
+
     return(
         <>
             <Link to='/Quiz/'>
@@ -31,24 +45,24 @@ export default function Quiz(){
                 </button>
             </Link>
 
+            <h1>{timer}</h1>
+
             <h1 className="border-2 border-solid border-gray-500 rounded-lg p-3 text-2xl mb-5 max-w-xl text-center">
                 {question}
             </h1>
 
-            <div>
-                {choices && choices.map(choice => (
-                    <div key={choice}
-                    className="choice border-2 border-solid border-gray-500 rounded-lg p-2 mb-2 hover:bg-gray-300 cursor-pointer transition-all duration-500">
-                        <p>{choice}</p>
-                    </div>
-                ))}
-            </div>
+            <Choices data={data}
+            currentIndex={currentIndex}
+            setShowAnswer={setShowAnswer}
+            showAnswer={showAnswer}
+            setSelectedAnswer={setSelectedAnswer}
+            selectedAnswer={selectedAnswer} />
 
-            <button className="mt-5 p-2 bg-gray-600 text-white">
-                <p>Next <i className="fa-solid fa-arrow-right"></i></p>
-            </button>
-
-
+            <NextButton showAnswer={showAnswer} 
+            setCurrentIndex={setCurrentIndex} 
+            setShowAnswer={setShowAnswer}
+            setTimer={setTimer}
+            setSelectedAnswer={setSelectedAnswer} />
         </>
     )
 }
