@@ -1,6 +1,15 @@
 import { useMemo } from "react";
 
-export function Choices({ data, currentIndex, showAnswer, setSelectedAnswer, selectedAnswer, setShowAnswer }){
+export function Choices({ 
+    data, 
+    currentIndex, 
+    showAnswer, 
+    setSelectedAnswer, 
+    selectedAnswer, 
+    setShowAnswer,
+    setScore,
+    score
+    }){
 
     let choices;
     
@@ -25,6 +34,9 @@ export function Choices({ data, currentIndex, showAnswer, setSelectedAnswer, sel
         if (showAnswer) return;
         setSelectedAnswer(choice);
         setShowAnswer(true);
+        if (choice === data[currentIndex].correctAnswer){
+            setScore(prev => prev + 1)
+        }
     }
 
     return (

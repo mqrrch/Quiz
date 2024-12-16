@@ -13,6 +13,8 @@ export default function Quiz(){
     const [currentIndex, setCurrentIndex] = useState(0)
     const [showAnswer, setShowAnswer] = useState(false)
     const [selectedAnswer, setSelectedAnswer] = useState(null)
+    const [length, setLength] = useState(9)
+    const [score, setScore] = useState(0)
     
     let question;
     let data;
@@ -48,12 +50,18 @@ export default function Quiz(){
                     setShowAnswer={setShowAnswer}
                     showAnswer={showAnswer}
                     setSelectedAnswer={setSelectedAnswer}
-                    selectedAnswer={selectedAnswer} />
+                    selectedAnswer={selectedAnswer}
+                    setScore={setScore}
+                    score={score} />
 
-                    <NextButton showAnswer={showAnswer} 
-                    setCurrentIndex={setCurrentIndex} 
+                    <NextButton data={data}
+                    setCurrentIndex={setCurrentIndex}
+                    currentIndex={currentIndex} 
                     setShowAnswer={setShowAnswer}
-                    setSelectedAnswer={setSelectedAnswer} />
+                    showAnswer={showAnswer} 
+                    setSelectedAnswer={setSelectedAnswer}
+                    score={score}
+                    length={length} />
                 </>
             )}
         </>

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
 import Start from './Components/Start'
 import Quiz from './Components/Quiz'
+import Score from './Components/Score'
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
           <Routes>
             <Route path='/Quiz/' element={<Start />} />
             <Route path='/Quiz/questions' element={<Quiz />} />
+            <Route path='/Quiz/score' element={<Score />} />
           </Routes>
         </div>
       </BrowserRouter>
