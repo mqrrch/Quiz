@@ -1,7 +1,6 @@
 export function NextButton({ showAnswer, setCurrentIndex, setShowAnswer, setSelectedAnswer }){
     function handleNext(){
         setCurrentIndex(prevIndex => prevIndex + 1);
-        // setTimer(10);
         setShowAnswer(false);
         setSelectedAnswer(null);
     }

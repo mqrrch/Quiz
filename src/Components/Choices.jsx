@@ -1,11 +1,26 @@
+import { useMemo } from "react";
+
 export function Choices({ data, currentIndex, showAnswer, setSelectedAnswer, selectedAnswer, setShowAnswer }){
 
-    let choices; 
+    let choices;
     
-    if (data){
-        choices = [...data[currentIndex]['incorrectAnswers'], data[currentIndex]['correctAnswer']]
+    function shuffleArray(array){
+        for (let i = choices.length - 1; i > 0; i--){
+            const randomIndex = Math.floor(Math.random() * (i + 1));
+            [array[i], array[randomIndex]] = [array[randomIndex], array[i]];
+        }
+        return array;
     }
 
+    const shuffledChoices = useMemo(() => {
+        if (data){
+            choices = [...data[currentIndex]['incorrectAnswers'], 
+            data[currentIndex]['correctAnswer']]
+            return shuffleArray(choices)
+        }
+        return [];
+    }, [data, currentIndex])
+     
     function handleAnswer(choice){
         if (showAnswer) return;
         setSelectedAnswer(choice);
@@ -14,7 +29,7 @@ export function Choices({ data, currentIndex, showAnswer, setSelectedAnswer, sel
 
     return (
         <div>
-            {choices && choices.map((choice, index) => (
+            {shuffledChoices && shuffledChoices.map((choice, index) => (
                 <div key={index}
                 className={`choice border-2 border-solid border-gray-500 
                     rounded-lg p-2 mb-2 hover:bg-gray-300 cursor-pointer 
